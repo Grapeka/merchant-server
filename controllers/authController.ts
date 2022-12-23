@@ -4,7 +4,7 @@ import users from '../db/users';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export async function generateToken(
+export async function signin(
   req: Request,
   res: Response
 ): Promise<Response<any, Record<string, any>>> {
@@ -13,6 +13,7 @@ export async function generateToken(
   const user = users.find(
     (user) => user.email === email && user.password === password
   );
+
   if (user === undefined) {
     return res.sendStatus(403);
   }
@@ -22,10 +23,10 @@ export async function generateToken(
     { expiresIn: '2h' }
   );
 
-  return res.json({ accessToken });
+  return res.json({ accessToken, user });
 }
 
-export async function register(req: Request, res: Response) {
+export async function signup(req: Request, res: Response) {
   const { firstname, lastname, email, password } = req.body;
 
   const user = {
