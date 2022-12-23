@@ -1,20 +1,20 @@
 const jwt = require('jsonwebtoken');
 import { Request, Response } from 'express';
-import users from '../db/users';
+import merchants, { IMerchant } from '../db/users';
 import dotenv from 'dotenv';
 dotenv.config();
 
 export async function signin(
   req: Request,
   res: Response
-): Promise<Response<any, Record<string, any>>> {
+): Promise<Response<string, Record<string, IMerchant>>> {
   const { email, password } = req.body;
 
-  const user = users.find(
+  const merchant = merchants.find(
     (user) => user.email === email && user.password === password
   );
 
-  if (user === undefined) {
+  if (merchant === undefined) {
     return res.sendStatus(403);
   }
   const accessToken = jwt.sign(
@@ -23,35 +23,38 @@ export async function signin(
     { expiresIn: '2h' }
   );
 
-  return res.json({ accessToken, user });
+  return res.json({ accessToken, merchant });
 }
 
-export async function signup(req: Request, res: Response) {
-  const { firstname, lastname, email, password } = req.body;
+export async function signup(
+  req: Request,
+  res: Response
+): Promise<Response<any>> {
+  const { name, email, password, facebook, instagram } = req.body;
 
-  const user = {
-    id: users.length + 1,
-    firstname,
-    lastname,
+  const merchant = {
+    id: merchants.length + 1,
+    name,
     email,
     password,
+    facebook,
+    instagram,
   };
 
-  // db
-  users.push(user);
+  merchants.push(merchant);
 
-  return res.json(users);
+  return res.sendStatus(201);
 }
 
 export async function getUser(
   req: any,
   res: Response
-): Promise<Response<any, Record<string, any>>> {
+): Promise<Response<any, Record<string, IMerchant>>> {
   const { email, password } = req.body;
 
-  const user = users.find(
+  const merchant = merchants.find(
     (user) => user.email === email && user.password === password
   );
 
-  return res.json(user);
+  return res.json(merchant);
 }

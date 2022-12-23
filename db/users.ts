@@ -1,33 +1,37 @@
-export interface User {
+export interface IMerchant {
   id: number;
-  firstname: string;
-  lastname: string;
+  name: string;
   email: string;
   password: string;
+  facebook: string;
+  instagram: string;
 }
 
-const users: User[] = [
+const merchants: IMerchant[] = [
   {
     id: 1,
-    firstname: 'John',
-    lastname: 'Doe',
-    email: 'bro@gmail.com',
+    name: 'Bakery125',
+    email: 'bakery125@gmail.com',
     password: '123456',
+    facebook: 'https://www.facebook.com/bakery125',
+    instagram: 'https://www.instagram.com/bakery125',
   },
   {
     id: 2,
-    firstname: 'Jane',
-    lastname: 'Doe',
-    email: 'sis@gmail.com',
+    name: 'Pizza123',
+    email: 'pizza123@gmail.com',
     password: '123456',
+    facebook: 'https://www.facebook.com/pizza123',
+    instagram: 'https://www.instagram.com/pizza123',
   },
   {
     id: 3,
-    firstname: 'Jack',
-    lastname: 'Doe',
-    email: 'litbro@gmail.com',
+    name: 'Burger456',
+    email: 'burger456@gmil.com',
     password: '123456',
+    facebook: 'https://www.facebook.com/burger456',
+    instagram: 'https://www.instagram.com/burger456',
   },
 ];
 
-export default users;
+export default merchants;
