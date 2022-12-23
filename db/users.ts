@@ -1,4 +1,12 @@
-const users = [
+export interface User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+}
+
+const users: User[] = [
   {
     id: 1,
     firstname: 'John',
