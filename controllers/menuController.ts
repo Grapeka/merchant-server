@@ -26,13 +26,15 @@ export const getMenuItemsByMerchantId = async (
   req: Request | any,
   res: Response
 ): Promise<Response<IMenu | IMenu[]>> => {
-  const { id } = req.params;
+  const { merchantId } = req.body;
 
-  if (req.user.id !== parseInt(id)) {
+  if (req.user.id !== parseInt(merchantId)) {
     return res.sendStatus(403);
   }
 
-  const menuItems = menu.filter((item) => item.ownerId === parseInt(id));
+  const menuItems = menu.filter(
+    (item) => item.ownerId === parseInt(merchantId)
+  );
 
   if (menuItems.length === 0) {
     return res.sendStatus(404);

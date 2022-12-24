@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', menuController.getAllMenuItems);
 router.get('/:id', menuController.getMenuItemById);
 router.post(
-  '/merchant-menu',
+  '/merchant',
   authMiddleware,
   menuController.getMenuItemsByMerchantId
 );

@@ -14,11 +14,13 @@ export async function signin(
     (user) => user.email === email && user.password === password
   );
 
+  const { id } = merchant as IMerchant;
+
   if (merchant === undefined) {
     return res.sendStatus(403);
   }
   const accessToken = jwt.sign(
-    { email, password },
+    { id, email, password },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '2h' }
   );
