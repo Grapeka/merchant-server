@@ -10,15 +10,16 @@ export async function signin(
 ): Promise<Response<string, Record<string, IMerchant>>> {
   const { email, password } = req.body;
 
-  const merchant = merchants.find(
+  const merchant = await merchants.find(
     (user) => user.email === email && user.password === password
   );
-
-  const { id } = merchant as IMerchant;
 
   if (merchant === undefined) {
     return res.sendStatus(403);
   }
+
+  const { id } = merchant as IMerchant;
+
   const accessToken = jwt.sign(
     { id, email, password },
     process.env.ACCESS_TOKEN_SECRET,
