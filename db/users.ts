@@ -11,7 +11,7 @@ const merchants: IMerchant[] = [
   {
     id: 1,
     name: 'Bakery125',
-    email: 'bakery125@gmail.com',
+    email: 'bk@gmail.com',
     password: '123456',
     facebook: 'https://www.facebook.com/bakery125',
     instagram: 'https://www.instagram.com/bakery125',
