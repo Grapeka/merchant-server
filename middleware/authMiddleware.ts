@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-import { IMerchant } from '../db/users';
+import { IMerchant } from '../interfaces/IMerchant';
 import { Request, Response, NextFunction } from 'express';
 
 export function authMiddleware(
