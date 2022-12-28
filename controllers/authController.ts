@@ -62,7 +62,15 @@ export async function signup(
     instagram
   );
 
-  const merchantData: IMerchant = {
+  const errors = foundMerchant.validate();
+  if (errors) {
+    return res.status(400).json(errors);
+  }
+
+  const hashedPassword = await foundMerchant.hashPassword(password);
+  foundMerchant.setPassword(hashedPassword);
+
+  const merchantData = {
     id: foundMerchant.getId(),
     name: foundMerchant.getName(),
     email: foundMerchant.getEmail(),
