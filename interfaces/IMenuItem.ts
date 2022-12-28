@@ -1,6 +1,6 @@
 export interface IMenuItem {
-  ownerId: number;
-  id: number;
+  ownerId: string;
+  id: string;
   name: string;
   category: string;
   description: string;
