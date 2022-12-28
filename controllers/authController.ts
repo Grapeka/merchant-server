@@ -1,8 +1,14 @@
 const jwt = require('jsonwebtoken');
 import { Request, Response } from 'express';
-import merchants, { IMerchant } from '../db/users';
+import merchants, { IMerchant } from '../mocks/users';
 import dotenv from 'dotenv';
+import { MongoMerchantRepository } from '../repositories/mongo/MongoMerchantRepository';
+import { MerchantService } from '../services/MerchantService';
+
 dotenv.config();
+
+const mongoMerchantRepository = new MongoMerchantRepository();
+const mongoMerchantService = new MerchantService(mongoMerchantRepository);
 
 export async function signin(
   req: Request,
@@ -10,11 +16,13 @@ export async function signin(
 ): Promise<Response<string, Record<string, IMerchant>>> {
   const { email, password } = req.body;
 
-  const merchant = await merchants.find(
-    (user) => user.email === email && user.password === password
-  );
+  const merchant = await mongoMerchantService.getMerchantByEmail(email);
 
-  if (merchant === undefined) {
+  if (
+    merchant?.password !== password ||
+    merchant === null ||
+    merchant === undefined
+  ) {
     return res.sendStatus(403);
   }
 
@@ -43,8 +51,7 @@ export async function signup(
     facebook,
     instagram,
   };
-
-  merchants.push(merchant);
+  mongoMerchantService.saveMerchant(merchant);
 
   return res.sendStatus(201);
 }
@@ -53,11 +60,7 @@ export async function getUser(
   req: any,
   res: Response
 ): Promise<Response<any, Record<string, IMerchant>>> {
-  const { email, password } = req.body;
-
-  const merchant = merchants.find(
-    (user) => user.email === email && user.password === password
-  );
+  const merchant = await mongoMerchantService.getMerchantById(req.user.id);
 
   return res.json(merchant);
 }
