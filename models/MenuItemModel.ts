@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import { IMenuItem } from '../interfaces/IMenuItem';
 
 export const menuItemSchema: mongoose.Schema<IMenuItem> = new mongoose.Schema({
-  ownerId: { type: Number, required: true },
-  id: { type: Number, required: true, unique: true },
+  ownerId: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   category: { type: String, required: true },
   description: { type: String, required: true },
