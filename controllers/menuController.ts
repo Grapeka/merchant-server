@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
 import { IMenuItem } from '../interfaces/IMenuItem';
 import { MongoMenuRepository } from '../repositories/mongo/MongoMenuRepository';
 import { MenuService } from '../services/MenuService';
 import { MenuItemModel } from '../models/MenuItemModel';
+import { Request, Response } from 'express';
 
 const menuItemModel = MenuItemModel.getInstance();
 const mongoMenuRepository = new MongoMenuRepository(menuItemModel);

@@ -1,19 +1,17 @@
-const jwt = require('jsonwebtoken');
 import { Request, Response } from 'express';
 import { IMerchant } from '../interfaces/IMerchant';
-import dotenv from 'dotenv';
 import { MongoMerchantRepository } from '../repositories/mongo/MongoMerchantRepository';
 import { MerchantService } from '../services/MerchantService';
 import { Merchant } from '../entities/Merchant';
 import { MerchantModel } from '../models/MerchantModel';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
 const merchantModel = MerchantModel.getInstance();
-
 const mongoMerchantRepository = new MongoMerchantRepository(merchantModel);
-
 const mongoMerchantService = new MerchantService(mongoMerchantRepository);
 
 export async function signin(
