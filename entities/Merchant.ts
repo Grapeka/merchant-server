@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+
 export class Merchant {
   private id: string;
   private name: string;
@@ -68,5 +70,15 @@ export class Merchant {
 
   setInstagram(instagram: string): void {
     this.instagram = instagram;
+  }
+
+  private hashPassword(password: string): string {
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    return hashedPassword;
+  }
+
+  public checkPassword(password: string): boolean {
+    return bcrypt.compareSync(password, this.password);
   }
 }
