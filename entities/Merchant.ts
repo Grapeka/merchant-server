@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { IValidationError } from '../interfaces/IValidationError';
 
 export class Merchant {
   private id: string;
@@ -72,7 +73,7 @@ export class Merchant {
     this.instagram = instagram;
   }
 
-  private hashPassword(password: string): string {
+  public hashPassword(password: string): string {
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     return hashedPassword;
@@ -80,5 +81,35 @@ export class Merchant {
 
   public checkPassword(password: string): boolean {
     return bcrypt.compareSync(password, this.password);
+  }
+
+  public validate(): IValidationError[] | null {
+    const errors: IValidationError[] = [];
+
+    if (!this.id) {
+      errors.push({ field: 'id', message: 'Id is required' });
+    }
+
+    if (!this.name) {
+      errors.push({ field: 'name', message: 'Name is required' });
+    }
+
+    if (!this.email) {
+      errors.push({ field: 'email', message: 'Email is required' });
+    }
+
+    if (!this.password) {
+      errors.push({ field: 'password', message: 'Password is required' });
+    }
+
+    if (!this.facebook) {
+      errors.push({ field: 'facebook', message: 'Facebook is required' });
+    }
+
+    if (!this.instagram) {
+      errors.push({ field: 'instagram', message: 'Instagram is required' });
+    }
+
+    return errors.length > 0 ? errors : null;
   }
 }
