@@ -5,8 +5,8 @@ import { MerchantModel } from '../../models/MerchantModel';
 export class MongoMerchantRepository implements IMerchantRepository {
   private merchantModel: MerchantModel;
 
-  constructor() {
-    this.merchantModel = MerchantModel.getInstance();
+  constructor(merchantModel: MerchantModel) {
+    this.merchantModel = merchantModel;
   }
 
   async getAllMerchants(): Promise<IMerchant[] | null> {

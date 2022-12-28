@@ -5,8 +5,8 @@ import { MenuItemModel } from '../../models/MenuItemModel';
 export class MongoMenuRepository implements IMenuRepository {
   private menuItemModel: MenuItemModel;
 
-  constructor() {
-    this.menuItemModel = MenuItemModel.getInstance();
+  constructor(menuItemModel: MenuItemModel) {
+    this.menuItemModel = menuItemModel;
   }
 
   async getAllMenuItems(): Promise<IMenuItem[] | null> {
