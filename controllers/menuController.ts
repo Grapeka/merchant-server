@@ -2,8 +2,10 @@ import { Request, Response } from 'express';
 import { IMenuItem } from '../interfaces/IMenuItem';
 import { MongoMenuRepository } from '../repositories/mongo/MongoMenuRepository';
 import { MenuService } from '../services/MenuService';
+import { MenuItemModel } from '../models/MenuItemModel';
 
-const mongoMenuRepository = new MongoMenuRepository();
+const menuItemModel = MenuItemModel.getInstance();
+const mongoMenuRepository = new MongoMenuRepository(menuItemModel);
 const mongoMenuService = new MenuService(mongoMenuRepository);
 
 export const getAllMenuItems = async (
