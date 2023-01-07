@@ -38,19 +38,8 @@ export class MenuController {
   ): Promise<Response<IMenuItem | IMenuItem[] | any>> {
     const merchantId = req.user.id;
 
-    if (req.user.id !== parseInt(merchantId)) {
-      return res.sendStatus(403);
-    }
-
     const menuItems = await mongoMenuService.getMenuItemsByOwnerId(merchantId);
 
-    if (menuItems === null || menuItems === undefined) {
-      return res.sendStatus(404);
-    }
-
-    if (menuItems.length) {
-      return res.sendStatus(404);
-    }
     return res.json(menuItems);
   }
 }
