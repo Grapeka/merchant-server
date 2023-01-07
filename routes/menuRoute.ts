@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import * as menuController from '../controllers/menuController';
 import { authMiddleware } from '../middleware/authMiddleware';
+import { MenuController } from '../controllers/menuController';
 
 const router = Router();
+const menuController = new MenuController();
 
 router.get('/', menuController.getAllMenuItems);
 router.get('/:id', menuController.getMenuItemById);
