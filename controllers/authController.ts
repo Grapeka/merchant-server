@@ -14,84 +14,83 @@ const merchantModel = MerchantModel.getInstance();
 const mongoMerchantRepository = new MongoMerchantRepository(merchantModel);
 const mongoMerchantService = new MerchantService(mongoMerchantRepository);
 
-export async function signin(
-  req: Request,
-  res: Response
-): Promise<Response<string, Record<string, IMerchant>>> {
-  const { email, password } = req.body;
+export class AuthController {
+  async signin(
+    req: Request,
+    res: Response
+  ): Promise<Response<string, Record<string, IMerchant>>> {
+    const { email, password } = req.body;
 
-  const merchant = await mongoMerchantService.getMerchantByEmail(email);
+    const merchant = await mongoMerchantService.getMerchantByEmail(email);
 
-  if (merchant === null || merchant === undefined) {
-    return res.sendStatus(403);
+    if (merchant === null || merchant === undefined) {
+      return res.sendStatus(403);
+    }
+
+    const foundMerchant = new Merchant(
+      merchant.id,
+      merchant?.name,
+      merchant?.email,
+      merchant?.password,
+      merchant?.facebook,
+      merchant?.instagram
+    );
+
+    if (foundMerchant.checkPassword(password) === false) {
+      return res.sendStatus(403);
+    }
+
+    const { id } = merchant as IMerchant;
+
+    const accessToken = jwt.sign(
+      { id, email, password },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    return res.json({ accessToken, merchant });
   }
 
-  const foundMerchant = new Merchant(
-    merchant.id,
-    merchant?.name,
-    merchant?.email,
-    merchant?.password,
-    merchant?.facebook,
-    merchant?.instagram
-  );
+  async signup(req: Request, res: Response): Promise<Response<any>> {
+    const { name, email, password, facebook, instagram } = req.body;
 
-  if (foundMerchant.checkPassword(password) === false) {
-    return res.sendStatus(403);
+    const foundMerchant = new Merchant(
+      crypto.randomUUID(),
+      name,
+      email,
+      password,
+      facebook,
+      instagram
+    );
+
+    const errors = foundMerchant.validate();
+    if (errors) {
+      return res.status(400).json(errors);
+    }
+
+    const hashedPassword = await foundMerchant.hashPassword(password);
+    foundMerchant.setPassword(hashedPassword);
+
+    const merchantData = {
+      id: foundMerchant.getId(),
+      name: foundMerchant.getName(),
+      email: foundMerchant.getEmail(),
+      password: foundMerchant.getPassword(),
+      facebook: foundMerchant.getFacebook(),
+      instagram: foundMerchant.getInstagram(),
+    };
+
+    mongoMerchantService.saveMerchant(merchantData);
+
+    return res.sendStatus(201);
   }
 
-  const { id } = merchant as IMerchant;
+  async getUser(
+    req: any,
+    res: Response
+  ): Promise<Response<any, Record<string, IMerchant>>> {
+    const merchant = await mongoMerchantService.getMerchantById(req.user.id);
 
-  const accessToken = jwt.sign(
-    { id, email, password },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '2h' }
-  );
-
-  return res.json({ accessToken, merchant });
-}
-
-export async function signup(
-  req: Request,
-  res: Response
-): Promise<Response<any>> {
-  const { name, email, password, facebook, instagram } = req.body;
-
-  const foundMerchant = new Merchant(
-    crypto.randomUUID(),
-    name,
-    email,
-    password,
-    facebook,
-    instagram
-  );
-
-  const errors = foundMerchant.validate();
-  if (errors) {
-    return res.status(400).json(errors);
+    return res.json(merchant);
   }
-
-  const hashedPassword = await foundMerchant.hashPassword(password);
-  foundMerchant.setPassword(hashedPassword);
-
-  const merchantData = {
-    id: foundMerchant.getId(),
-    name: foundMerchant.getName(),
-    email: foundMerchant.getEmail(),
-    password: foundMerchant.getPassword(),
-    facebook: foundMerchant.getFacebook(),
-    instagram: foundMerchant.getInstagram(),
-  };
-
-  mongoMerchantService.saveMerchant(merchantData);
-
-  return res.sendStatus(201);
-}
-
-export async function getUser(
-  req: any,
-  res: Response
-): Promise<Response<any, Record<string, IMerchant>>> {
-  const merchant = await mongoMerchantService.getMerchantById(req.user.id);
-
-  return res.json(merchant);
 }
