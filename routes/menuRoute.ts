@@ -12,5 +12,6 @@ router.post(
   authMiddleware,
   menuController.getMenuItemsByMerchantId
 );
+router.post('/', authMiddleware, menuController.createMenuItem);
 
 export default router;
