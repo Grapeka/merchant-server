@@ -9,6 +9,10 @@ export class MongoMenuRepository implements IMenuRepository {
     this.menuItemModel = menuItemModel;
   }
 
+  async createMenuItem(menuItem: IMenuItem): Promise<void> {
+    this.menuItemModel.model.create(menuItem);
+  }
+
   async getAllMenuItems(): Promise<IMenuItem[] | null> {
     return this.menuItemModel.model.find();
   }
