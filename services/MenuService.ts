@@ -8,6 +8,10 @@ export class MenuService {
     this.menuRepository = menuRepository;
   }
 
+  async createMenuItem(menuItem: IMenuItem): Promise<void> {
+    return this.menuRepository.createMenuItem(menuItem);
+  }
+
   async getAllMenuItems(): Promise<IMenuItem[] | null> {
     return this.menuRepository.getAllMenuItems();
   }
