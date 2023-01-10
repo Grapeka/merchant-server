@@ -10,35 +10,6 @@ const mongoMenuRepository = new MongoMenuRepository(menuItemModel);
 const mongoMenuService = new MenuService(mongoMenuRepository);
 
 export class MenuController {
-  createMenuItem(req: Request | any, res: Response): Response<IMenuItem> {
-    const merchantId = req.user.id;
-
-    const { name, description, price, ownerId, category, image } = req.body;
-
-    if (merchantId !== ownerId) {
-      return res.sendStatus(403);
-    }
-    const id = crypto.randomUUID();
-
-    if (
-      id === undefined ||
-      name === undefined ||
-      description === undefined ||
-      price === undefined ||
-      ownerId === undefined ||
-      category === undefined ||
-      image === undefined ||
-      image === undefined
-    ) {
-      return res.sendStatus(400);
-    }
-
-    const menuItem = { id, name, description, price, ownerId, category, image };
-
-    mongoMenuService.createMenuItem(menuItem as IMenuItem);
-
-    return res.json(menuItem);
-  }
   async getAllMenuItems(
     req: Request,
     res: Response
@@ -87,5 +58,36 @@ export class MenuController {
     const menuItems = await mongoMenuService.getMenuItemsByOwnerId(merchantId);
 
     return res.json(menuItems);
+  }
+
+  createMenuItem(req: Request | any, res: Response): Response<IMenuItem> {
+    const merchantId = req.user.id;
+
+    const { name, description, price, ownerId, category, image } = req.body;
+
+    console.log(req.body);
+
+    if (merchantId !== ownerId) {
+      return res.sendStatus(403);
+    }
+    const id = crypto.randomUUID();
+
+    if (
+      id === undefined ||
+      name === undefined ||
+      description === undefined ||
+      price === undefined ||
+      ownerId === undefined ||
+      category === undefined ||
+      image === undefined
+    ) {
+      return res.sendStatus(400);
+    }
+
+    const menuItem = { id, name, description, price, ownerId, category, image };
+
+    mongoMenuService.createMenuItem(menuItem as IMenuItem);
+
+    return res.json(menuItem);
   }
 }
