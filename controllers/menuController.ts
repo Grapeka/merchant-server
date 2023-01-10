@@ -28,7 +28,7 @@ export class MenuController {
       ownerId === undefined ||
       category === undefined ||
       image === undefined ||
-      image === ''
+      image === undefined
     ) {
       return res.sendStatus(400);
     }
@@ -60,6 +60,22 @@ export class MenuController {
     }
 
     return res.json(menuItem);
+  }
+
+  async getMenuItemsByPage(
+    req: Request,
+    res: Response
+  ): Promise<Response<IMenuItem[] | []>> {
+    const { page } = req.body;
+
+    const menuItems = await mongoMenuService.getMenuItemsByPage(parseInt(page));
+    const menuItemsCount = await mongoMenuService.getMenuItemsCount();
+
+    if (menuItems === undefined || menuItems === null) {
+      return res.sendStatus(404);
+    }
+
+    return res.json({ menuItems, menuItemsCount });
   }
 
   async getMenuItemsByMerchantId(

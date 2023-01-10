@@ -20,6 +20,14 @@ export class MenuService {
     return this.menuRepository.getMenuItemById(id);
   }
 
+  async getMenuItemsByPage(page: number): Promise<IMenuItem[] | null> {
+    return this.menuRepository.getMenuItemsByPage(page);
+  }
+
+  async getMenuItemsCount(): Promise<number> {
+    return this.menuRepository.getMenuItemsCount();
+  }
+
   async getMenuItemsByOwnerId(ownerId: number): Promise<IMenuItem[] | null> {
     return this.menuRepository.getMenuItemsByOwnerId(ownerId);
   }

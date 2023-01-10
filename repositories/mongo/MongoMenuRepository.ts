@@ -17,6 +17,17 @@ export class MongoMenuRepository implements IMenuRepository {
     return this.menuItemModel.model.find();
   }
 
+  async getMenuItemsByPage(page: number): Promise<IMenuItem[] | null> {
+    return this.menuItemModel.model
+      .find()
+      .skip(15 * (page - 1))
+      .limit(15);
+  }
+
+  async getMenuItemsCount(): Promise<number> {
+    return this.menuItemModel.model.countDocuments();
+  }
+
   async getMenuItemById(id: number): Promise<IMenuItem | null> {
     return this.menuItemModel.model.findOne({ id });
   }
