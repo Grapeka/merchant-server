@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
+
 export interface IMerchant {
-  id: string;
+  _id?: any;
   name: string;
   email: string;
   password: string;
