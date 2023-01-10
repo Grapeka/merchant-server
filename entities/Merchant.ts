@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import { IValidationError } from '../interfaces/IValidationError';
 
 export class Merchant {
-  private id: string;
   private name: string;
   private email: string;
   private password: string;
@@ -10,23 +9,17 @@ export class Merchant {
   private instagram: string;
 
   constructor(
-    id: string,
     name: string,
     email: string,
     password: string,
     facebook: string,
     instagram: string
   ) {
-    this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
     this.facebook = facebook;
     this.instagram = instagram;
-  }
-
-  getId(): string {
-    return this.id;
   }
 
   getName(): string {
@@ -47,10 +40,6 @@ export class Merchant {
 
   getInstagram(): string {
     return this.instagram;
-  }
-
-  setId(id: string): void {
-    this.id = id;
   }
 
   setName(name: string): void {
@@ -86,10 +75,6 @@ export class Merchant {
   public validate(): IValidationError[] | null {
     const errors: IValidationError[] = [];
 
-    if (!this.id) {
-      errors.push({ field: 'id', message: 'Id is required' });
-    }
-
     if (!this.name) {
       errors.push({ field: 'name', message: 'Name is required' });
     }
@@ -102,13 +87,7 @@ export class Merchant {
       errors.push({ field: 'password', message: 'Password is required' });
     }
 
-    if (!this.facebook) {
-      errors.push({ field: 'facebook', message: 'Facebook is required' });
-    }
-
-    if (!this.instagram) {
-      errors.push({ field: 'instagram', message: 'Instagram is required' });
-    }
+    console.log(errors);
 
     return errors.length > 0 ? errors : null;
   }
