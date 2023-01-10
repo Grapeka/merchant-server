@@ -70,10 +70,8 @@ export class MenuController {
     if (merchantId !== ownerId) {
       return res.sendStatus(403);
     }
-    const id = crypto.randomUUID();
 
     if (
-      id === undefined ||
       name === undefined ||
       description === undefined ||
       price === undefined ||
@@ -84,9 +82,9 @@ export class MenuController {
       return res.sendStatus(400);
     }
 
-    const menuItem = { id, name, description, price, ownerId, category, image };
+    const menuItem = { name, description, price, ownerId, category, image };
 
-    mongoMenuService.createMenuItem(menuItem as IMenuItem);
+    mongoMenuService.createMenuItem(menuItem);
 
     return res.json(menuItem);
   }

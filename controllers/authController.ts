@@ -23,12 +23,13 @@ export class AuthController {
 
     const merchant = await mongoMerchantService.getMerchantByEmail(email);
 
+    const id = merchant?._id.toHexString();
+
     if (merchant === null || merchant === undefined) {
       return res.sendStatus(403);
     }
 
     const foundMerchant = new Merchant(
-      merchant.id,
       merchant?.name,
       merchant?.email,
       merchant?.password,
@@ -39,8 +40,6 @@ export class AuthController {
     if (foundMerchant.checkPassword(password) === false) {
       return res.sendStatus(403);
     }
-
-    const { id } = merchant as IMerchant;
 
     const accessToken = jwt.sign(
       { id, email, password },
@@ -55,7 +54,6 @@ export class AuthController {
     const { name, email, password, facebook, instagram } = req.body;
 
     const foundMerchant = new Merchant(
-      crypto.randomUUID(),
       name,
       email,
       password,
@@ -72,7 +70,6 @@ export class AuthController {
     foundMerchant.setPassword(hashedPassword);
 
     const merchantData = {
-      id: foundMerchant.getId(),
       name: foundMerchant.getName(),
       email: foundMerchant.getEmail(),
       password: foundMerchant.getPassword(),
