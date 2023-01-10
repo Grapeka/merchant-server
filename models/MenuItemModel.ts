@@ -8,7 +8,7 @@ export const menuItemSchema: mongoose.Schema<IMenuItem> = new mongoose.Schema({
   category: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  image: { type: String, required: true },
+  image: { type: String, required: false },
 });
 
 export class MenuItemModel {
