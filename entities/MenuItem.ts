@@ -2,6 +2,7 @@ export class MenuItem {
   private id: string;
   private name: string;
   private description: string;
+  private category: string;
   private price: number;
 
   constructor(id: string, name: string, description: string, price: number) {
@@ -23,6 +24,10 @@ export class MenuItem {
     return this.description;
   }
 
+  getCategory(): string {
+    return this.category;
+  }
+
   getPrice(): number {
     return this.price;
   }
@@ -37,6 +42,10 @@ export class MenuItem {
 
   setDescription(description: string): void {
     this.description = description;
+  }
+
+  setCategory(category: string): void {
+    this.category = category;
   }
 
   setPrice(price: number): void {
