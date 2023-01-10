@@ -1,6 +1,7 @@
+import mongoose from 'mongoose';
+
 export interface IMenuItem {
-  ownerId: string;
-  id: string;
+  ownerId: string | mongoose.SchemaDefinitionProperty<string>;
   name: string;
   category: string;
   description: string;
