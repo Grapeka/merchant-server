@@ -14,14 +14,15 @@ export class MongoMenuRepository implements IMenuRepository {
   }
 
   async getAllMenuItems(): Promise<IMenuItem[] | null> {
-    return this.menuItemModel.model.find();
+    return this.menuItemModel.model.find().populate('ownerId');
   }
 
   async getMenuItemsByPage(page: number): Promise<IMenuItem[] | null> {
     return this.menuItemModel.model
       .find()
       .skip(15 * (page - 1))
-      .limit(15);
+      .limit(15)
+      .populate('ownerId');
   }
 
   async getMenuItemsCount(): Promise<number> {
@@ -33,7 +34,7 @@ export class MongoMenuRepository implements IMenuRepository {
   }
 
   async getMenuItemsByOwnerId(ownerId: number): Promise<IMenuItem[] | null> {
-    return this.menuItemModel.model.find({ ownerId });
+    return this.menuItemModel.model.find({ ownerId }).populate('ownerId');
   }
 
   async saveMenuItem(menuItem: IMenuItem): Promise<void> {
