@@ -4,6 +4,7 @@ const cors = require('cors');
 import mongoose from 'mongoose';
 import authRoute from './routes/authRoute';
 import menuRoute from './routes/menuRoute';
+import fileRoute from './routes/fileRoute';
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO_URI ?? '', {}, () => {
 
 app.use('/auth', authRoute);
 app.use('/menu', menuRoute);
+app.use('/file', fileRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started on port ${process.env.PORT}`);
