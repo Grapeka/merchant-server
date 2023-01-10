@@ -7,6 +7,7 @@ const menuController = new MenuController();
 
 router.get('/', menuController.getAllMenuItems);
 router.get('/:id', menuController.getMenuItemById);
+router.post('/page', menuController.getMenuItemsByPage);
 router.post(
   '/merchant',
   authMiddleware,
