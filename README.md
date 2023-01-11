@@ -2,6 +2,8 @@
 
 Welcome to the Restaurant Menu Manager! With this tool, merchants can easily manage their food menu, as well as browse and explore menus from other merchants.
 
+This repository contains the backend code for the platform. The corresponding frontend repository can be found at the following link: https://github.com/Grapeka/restaurant-menu-manager-client.git
+
 ## Features
 
 The following features are available to users:
